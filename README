@@ -1,0 +1,18 @@
+Phoenix
+====================
+
+A basic x86 operating system written in assembly.
+
+Phoenix was a experimental bootdisk that I created to learn and experiment with.
+The system was codenamed Phoenix and was kept proprietary for a while.
+
+For more information please see the markdown readme file. This can be viewed 
+with a markdown viewer or on github.
+
+COPYRIGHT NOTICE
+Copyright (C) 2024 0x4248 and phoenix contributors
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the license is not changed.
+
+This software is free and open source. Licensed under the GNU general
+public license version 3.0 as published by the Free Software Foundation.
