@@ -23,13 +23,18 @@ NASM = nasm
 all: init build
 
 init:
-	mkdir -p $(BIN)wwwww
+	mkdir -p $(BIN)
 	
 build:
 	$(NASM) $(SRC)/boot.s -o $(BIN)/boot.bin
+	$(NASM) $(SRC)/kernel.s -o $(BIN)/kenrel.bin
+
+	dd if=/dev/zero of=$(BIN)/floppy.img bs=512 count=2880
+	dd if=$(BIN)/boot.bin of=$(BIN)/floppy.img conv=notrunc bs=512 count=1 seek=0
+	dd if=$(BIN)/kenrel.bin of=$(BIN)/floppy.img conv=notrunc bs=512 count=2048 seek=1
 
 clean:
 	rm -rf $(CLEAN)
 	
 run:
-	qemu-system-x86_64 -fda $(BIN)/boot.bin
+	qemu-system-x86_64 -fda $(BIN)/floppy.img

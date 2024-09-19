@@ -15,63 +15,17 @@ org 0x7C00
 bits 16
 
 .start:
-    cli
-    jmp .main
-
-.print_string:
-    .print_char:
-        lodsb
-        or al, al
-        jz .done
-        mov ah, 0x0E
-        int 0x10
-        jmp .print_string
-    .done:
-        call .new_line
-        ret
-
-.new_line:
-    mov ah, 0x0E
-    mov al, 0x0A
-    int 0x10
-    mov al, 0x0D
-    int 0x10
-    ret
-
-.wait_key:
-    mov ah, 0
-    int 0x16
-    ret
-
-.reboot:
-    ; Clearing the screen first before rebooting
-    ; Sometimes calling reboot (escpecially in QEMU) will not clear the screen
-    mov ah, 0
-    mov al, 3
-    int 0x10
+    jmp .jump_to_kernel
     
-    int 0x19
-    hlt
+.jump_to_kernel:
+    mov ah, 0x2
+    mov dl, 0x80
+    mov al, 10
+    mov cl, 2
+    mov bx, 0x8000
+    int 0x13
 
-.main:
-    mov si, msg0
-    call .print_string
-    mov si, msg1
-    call .print_string
-    call .new_line
-    call .loop
-
-.loop:
-    mov si, msg2
-    call .print_string
-    call .wait_key
-    cmp al, 'r'
-    jne .loop
-    call .reboot
-
-msg0 db "Welcome to Phoenix system 1!", 0
-msg1 db "Copyright (C) 2024 0x4248 GNU GPL v3", 0
-msg2 db "System running, press r to reboot", 0
+    jmp 0x8000
 
 times 510 - ($ - $$) db 0
 dw 0xAA55
